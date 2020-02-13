@@ -1,0 +1,7 @@
+---
+name: get_fs_stats
+pack: qumulo
+description: Get the statistics for the file system
+runner_type: python-script
+entry_point: get_fs_stats.py
+enabled: true

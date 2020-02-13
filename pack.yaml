@@ -1,0 +1,12 @@
+---
+ref: qumulo
+name: qumulo
+description: Qumulo Stackstorm Integration Pack
+keywords:
+  - Storage
+  - Qumulo
+version: 0.1.0
+python_versions:
+  - "2"
+author: Rick Kauffman
+email: rick.a.kauffman@hpe.com
