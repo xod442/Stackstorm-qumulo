@@ -1,0 +1,7 @@
+---
+name: get_nodes
+pack: qumulo
+description: Get the statistics for the file system nodes
+runner_type: python-script
+entry_point: get_nodes.py
+enabled: true

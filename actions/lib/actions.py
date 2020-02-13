@@ -18,22 +18,31 @@
 # __maintainer__ = "Rick Kauffman"
 # __email__ = "rick.a.kauffman@hpe.com"
 
-from qumulo.rest_client import RestClient
+# from qumulo.rest_client import RestClient
+import requests
+import json
 from st2common.runners.base_action import Action
 
 class QumuloBaseAction(Action):
     def __init__(self,config):
         super(QumuloBaseAction, self).__init__(config)
-        self.client = self._get_client()
+        self.root_url, self.default_header = self._get_login()
 
-    def _get_client(self):
+    def _get_login(self):
         ipaddress = self.config['ipaddress']
         username = self.config['username']
         password = self.config['password']
+        # set root UriBuilder
+        root_url = 'https://' + ipaddress + ':8000/'
+        login_url = root_url + 'v1/session/login'
+        default_header = {'content-type': 'application/json'}
+        creds = {'username': username, 'password': password}
+        response = requests.post(login_url,
+                                  data=json.dumps(creds),
+                                  headers=default_header,
+                                  verify=False)
 
-        client = RestClient(ipaddess,8000)
-        try:
-            client.login(username,password)
-        except:
-            print('Error authenticating to Qumulo Cluster')
-        return client
+        resp_data = json.loads(response.text)
+        default_header['Authorization'] = 'Bearer ' + resp_data['bearer_token']
+
+        return (root_url, default_header)
